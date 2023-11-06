@@ -1,0 +1,147 @@
+{
+  "layer": "top",
+	"position": "bottom",
+  "output": "eDP-2",
+	"width": 1900,
+  "margin-top": -5,
+	"margin-bottom": 10,
+    "modules-left": ["tray", "sway/workspaces"],
+    "modules-center": ["mpd", "custom/spotify"],
+    "modules-right": ["custom/dexcom", "network", "pulseaudio", "backlight", "battery", "custom/updates", "custom/date", "clock", "custom/power"],
+
+	"sway/workspaces": {
+		"all-outputs": true,
+		"on-click": "activate",
+	  "format": "{icon}",
+		"on-scroll-up": "hyprctl dispatch workspace e+1",
+		"on-scroll-down": "hyprctl dispatch workspace e-1",
+		"format-icons": {
+			"1": "󪤆",
+			"2": "󪤕",
+			"3": "󪥌",
+			"4": "󪤋",
+			"5": "󪤄",
+			"urgent": " ",
+			"default": "󪤰"
+		  }
+ },
+	"custom/power": {
+		"format": "<span font='11'></span> {}",
+		"on-click": "/home/narmis/.config/rofi/powermenu/type-2/powermenu.sh"
+	},
+	"custom/dexcom": {
+	 "format": "<span color=\"#EB6F92\"></span> {}",
+	 "exec": "cat /home/narmis/BG.txt",
+	 "on-click": "systemctl --user restart dexcom.service",
+	 "interval": 3
+	},
+	"custom/updates": {
+  "tooltip": true,
+  "return-type": "json",
+  "exec": "~/.local/bin/list_update.sh",
+	"format": "<span color=\"#C0A3E2\">󪥔</span> {}",
+  "interval": 60,
+  "tooltip-format": "{tooltip}",
+  },
+	"clock": {
+		"format": "<span color=\"#ebbcba\"></span> {:%I:%M}",
+		"format-alt": "{:%A, %B %d, %Y (%R)} <span color=\"#ebbcba\"></span> ",
+		"tooltip-format": "<tt><small>{calendar}</small></tt>",
+		"calendar": {
+			"mode"          : "month",
+			"mode-mon-col"  : 3,
+			"on-scroll"     : 1,
+			"on-click-right": "mode",
+			"format": {
+				"months":     "<span color='#9ccfd8'><b>{}</b></span>",
+				"days":       "<span color='#ebbcba'><b>{}</b></span>",
+				"weekdays":   "<span color='#f6c177'><b>{}</b></span>",
+			  "today":      "<span color='#eb6f92'><b><u>{}</u></b></span>"
+			}
+		},
+		"actions":  {
+			"on-click-right": "mode",
+			"on-click-forward": "tz_up",
+			"on-click-backward": "tz_down",
+			"on-scroll-up": "shift_up",
+			"on-scroll-down": "shift_down"
+		}
+	},
+	"battery": {
+        	"states": {
+            		"warning": 30,
+            		"critical": 15
+        	},
+        	"format": "{icon} {capacity}%",
+        	"format-charging": "<span color=\"#9ccfd8\">󰂄</span> {capacity}%",
+        	"format-alt": "{time} {icon}",
+        	"format-full": "<span color=\"#c4a7e7\">󱈏</span> {capacity}%",
+           	"format-icons": ["<span color=\"#EB6F92\"></span>", "<span color=\"#EB6F92\"></span>", "<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\"></span>"]
+	},
+    "backlight": {
+    "device": "nvidia_wmi_ec_backlight",
+    "format": "{icon} {percent}%",
+    "format-icons": ["<span color=\"#f6c177\"></span>", "<span color=\"#f6c177\"></span>", "<span color=\"#f6c177\"></span>", "<span color=\"#f6c177\"></span>", "<span color=\"#f6c177\"></span>", "<span color=\"#f6c177\"></span>", "<span color=\"#f6c177\"></span>"],
+	"on-scroll-up": "brightnessctl set 1%+",
+    "on-scroll-down": "brightnessctl set 1%-"
+    },
+	"network": {
+        	"format-wifi": "<span color=\"#ebbcba\"></span>  {essid}",
+			"tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+        	"format-ethernet": "{ifname} <span color=\"#ebbcba\"></span> ",
+        	"format-linked": "{ifname} <span color=\"#ebbcba\"></span>",
+        	"format-disconnected": "<span color=\"#ebbcba\">睊</span> Disconnected",
+        	"format-alt": "<span color=\"#ebbcba\">{ifname}: {ipaddr}/{cidr}</span>",
+			"on-click-right": "kitty -e nmtui"
+	},
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "on-click-right": "/home/narmis/.local/bin/audio-toggle.sh",
+		"format-muted": "<span color=\"#ebbcba\"></span> ",
+        "format-icons": {
+            "headphone": "<span color=\"#ebbcba\">󪥆</span>",
+            "hands-free": "<span color=\"#ebbcba\">󪥕</span>",
+            "headset": "<span color=\"#ebbcba\">󪥕</span>",
+            "phone": "<span color=\"#ebbcba\"></span>",
+            "portable": "<span color=\"#ebbcba\"></span>",
+            "default": ["<span color=\"#ebbcba\"></span>", "<span color=\"#ebbcba\">󰖀</span>", "<span color=\"#ebbcba\">󰕾</span> "]
+        }
+    },
+  "tray": {
+        "icon-size": 18,
+        "spacing": 6
+    },
+  "mpd": {
+		"format": "{stateIcon} {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) <span color=\"#ebbcba\"> </span>",
+		"on-click": "mpc toggle",
+		"format-disconnected": "Disconnected ",
+		"format-stopped": "<span color=\"#EB6F92\">󪤫</span>",
+		"interval": 10,
+		"consume-icons": {
+			"on": "  " 
+		},
+		"random-icons": {
+			"off": "",
+			"on": ""
+		},
+		"repeat-icons": {
+			"on": " "
+		},
+		"single-icons": {
+			"on": " "
+		},
+		"state-icons": {
+			"paused": "<span color=\"#EB6F92\">󪤷</span>",
+			"playing": "<span color=\"#EB6F92\">󪤶</span>"
+		},
+		"tooltip-format": "MPD (connected)",
+		"tooltip-format-disconnected": "MPD (disconnected)"
+	},
+	"custom/spotify": {
+		"exec": "/usr/bin/python3 ~/.local/bin/mediaplayer.py",
+		"format": "<span font='11' color=\"#9ccfd8\"></span>  {}",
+		"return-type": "json",
+		"on-click": "playerctl play-pause"
+	}
+}

@@ -1,0 +1,147 @@
+set	$mod		Mod4
+set	$left		h
+set	$down		j
+set	$up		  k
+set	$right	l
+set	$term		kitty
+set $clear #ffffff00
+
+bar {
+swaybar_command waybar
+}
+
+input type:touchpad {
+tap enabled
+natural_scroll enabled
+} 
+
+floating_modifier	$mod normal
+
+client.focused		#9ccfd8 #9ccfd8 #000000 #9ccfd8
+# class                  border   background  text     indicator  child_border
+client.focused_inactive  #333333  #5f676a     #ffffff  #403D52    #403D52
+client.unfocused         #333333  #222222     #888888  #292d2e    #403D52
+default_floating_border pixel 3
+titlebar_padding 1
+titlebar_border_thickness 0
+
+set $lock "swaylock --screenshots --clock --font 'Iosevka Nerd Font' --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --ring-color ebbcba --key-hl-color 31748f --line-color 00000000 --inside-color 00000000 --separator-color 00000000"
+bindswitch --reload --locked lid:on exec $lock
+
+gaps inner 10
+gaps outer 5
+default_border pixel 3
+output * background  $(find /home/narmis/Pictures/wallpapers/ -type f | shuf -n1) fill
+#output		eDP-2			mode 1920x1080@60hz
+#output		*				max_render_time 4
+
+for_window [app_id="^launcher*"] floating enable, sticky enable, resize set 30 ppt 60 ppt
+
+bindsym	$mod+Return	exec $term
+bindsym	$mod+q kill
+bindsym	$mod+d exec $menu
+bindsym	$mod+w exec firefox
+bindsym	$mod+a exec thunar
+bindsym $mod+x exec /home/narmis/.config/rofi/powermenu/type-2/powermenu.sh
+bindsym $mod+space exec /home/narmis/.config/rofi/launchers/type-1/launcher.sh
+bindsym $mod+b exec /home/narmis/.local/bin/battery.sh
+bindsym $mod+g exec kitty -e gomuks
+
+bindsym	$mod+Shift+r reload
+bindsym $mod+Shift+c exec hyprpicker --autocopy
+bindsym $mod+Shift+x exec swaynag -t warning -m 'Exit sway?' -b 'Yes' 'swaymsg exit'
+
+bindsym	$mod+Shift_R exec slurp | grim -g - - | wl-copy && wl-paste > $(xdg-user-dir PICTURES)/screenshots/$(date +'%Y-%m-%d-%H%M%S.png')
+bindsym	$mod+Shift+Shift_R exec slurp | grim -g - - | wl-copy && wl-paste 
+
+bindsym	$mod+$left focus left
+bindsym	$mod+$down focus down
+bindsym	$mod+$up focus up
+bindsym $mod+$right focus right
+
+bindsym	$mod+Shift+$left move left
+bindsym	$mod+Shift+$down move down
+bindsym	$mod+Shift+$up move up
+bindsym	$mod+Shift+$right	move right
+
+#bindsym	$mod+g gaps inner current plus 8
+#bindsym	$mod+Shift+g gaps inner current minus 8
+#bindsym	$mod+o gaps outer current plus 8
+#bindsym	$mod+Shift+o gaps outer current minus 8
+
+#bindsym	$mod+b splith
+#bindsym	$mod+v splitv
+#bindsym	$mod+w layout toggle split
+
+bindsym	$mod+f fullscreen
+
+bindsym $mod+s floating toggle
+
+#bindsym $mod+space	focus mode_toggle
+
+bindsym	$mod+1 workspace number 1
+bindsym	$mod+2 workspace number 2
+bindsym	$mod+3 workspace number 3
+bindsym	$mod+4 workspace number 4
+bindsym	$mod+5 workspace number 5
+bindsym	$mod+6 workspace number 6
+bindsym	$mod+7 workspace number 7
+bindsym	$mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+Shift+1 [con_id=__focused__] move to workspace 1, focus
+bindsym $mod+Shift+2 [con_id=__focused__] move to workspace 2, focus
+bindsym $mod+Shift+3 [con_id=__focused__] move to workspace 3, focus
+bindsym $mod+Shift+4 [con_id=__focused__] move to workspace 4, focus
+bindsym $mod+Shift+5 [con_id=__focused__] move to workspace 5, focus
+bindsym $mod+Shift+6 [con_id=__focused__] move to workspace 6, focus
+bindsym $mod+Shift+7 [con_id=__focused__] move to workspace 7, focus
+bindsym $mod+Shift+8 [con_id=__focused__] move to workspace 8, focus
+bindsym $mod+Shift+9 [con_id=__focused__] move to workspace 9, focus
+
+
+bindsym XF86MonBrightnessUp exec ~/.local/bin/volume_brightness.sh brightness_up
+
+bindsym XF86MonBrightnessDown exec ~/.local/bin/volume_brightness.sh brightness_down
+
+bindsym XF86AudioRaiseVolume exec ~/.local/bin/volume_brightness.sh volume_up
+
+bindsym XF86AudioLowerVolume exec ~/.local/bin/volume_brightness.sh volume_down
+
+bindsym XF86AudioMute exec ~/.local/bin/volume_brightness.sh volume_mute
+
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+bindsym Shift+XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPlay exec mpc toggle
+bindsym Shift+XF86AudioNext exec playerctl next
+bindsym XF86AudioNext exec mpc next
+bindsym Shift+XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPrev exec mpc prev
+bindsym SHift+XF86AudioStop exec playerctl stop
+bindsym XF86AudioStop exec mpc stop
+#bindsym	$mod+Shift+y		resize grow left 8px
+#bindsym	$mod+			resize shrink left 8px
+#bindsym 	$mod+Shift+u		resize grow down 8px
+#bindsym	$mod+u			resize shrink down 8px
+#bindsym	$mod+Shift+i		resize grow up 8px
+#bindsym	$mod+i			resize shrink up 8px
+#bindsym	$mod+Shift+o		resize grow right 8px
+#bindsym	$mod+o			resize shrink right 8px
+
+#bindsym	$mod+m			layout stacking
+#bindsym 	$mod+. layout tabbed
+#bindsym 	$mod+a focus parent
+
+exec_always {
+nohup easyeffects --gapplication-service &
+mpc stop &
+autotiling &
+dunst &
+update-notifier &
+mpd-discord-rpc &
+libinput-gestures-setup stop desktop autostart start &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+~/Downloads/legion-kb-rgb load-profile --path ~/Downloads/grey &
+}
+
+include /etc/sway/config.d/*
